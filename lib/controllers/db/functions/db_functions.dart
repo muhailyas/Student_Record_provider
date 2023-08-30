@@ -45,16 +45,16 @@ class DB {
     return true;
   }
 
-  updateStudent(StudentModel studnet, int id) async {
+  updateStudent(StudentModel student, int id) async {
     await db.rawUpdate(
         'UPDATE Student SET name = ?,age = ?,batch = ?,mobile = ?,email = ?,image = ? WHERE id = ?',
         [
-          studnet.name,
-          studnet.age,
-          studnet.batch,
-          studnet.mobile,
-          studnet.email,
-          studnet.image,
+          student.name,
+          student.age,
+          student.batch,
+          student.mobile,
+          student.email,
+          student.image,
           id,
         ]);
   }

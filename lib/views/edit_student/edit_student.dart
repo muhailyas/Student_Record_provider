@@ -1,14 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../controllers/db/functions/db_functions.dart';
+import 'package:provider/provider.dart';
+import 'package:student_data_using_getx/providers/providers.dart';
+import '../../controllers/image_picker/image_picker.dart';
 import '../../controllers/validation_functions/validation.dart';
 import '../../core/colors/colors.dart';
 import '../../core/constants/contants.dart';
 import '../../models/student_model.dart';
-import '../home/screen_home.dart';
 import '../register/screen_register.dart';
 import '../widgets/text_fom_field_widget/text_form_field_widget.dart';
 
@@ -21,7 +21,6 @@ class ScreenEditStduent extends StatelessWidget {
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ImagePicker _imagePicker = ImagePicker();
 
   initializingValues() {
     nameController.text = student.name;
@@ -35,6 +34,8 @@ class ScreenEditStduent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializingValues();
+    final studentListController =
+        Provider.of<StudentViewController>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -119,8 +120,22 @@ class ScreenEditStduent extends StatelessWidget {
                                 fixedSize: MaterialStatePropertyAll(
                                   Size(210, 50),
                                 )),
-                            onPressed: () {
-                              validate(context);
+                            onPressed: () async {
+                              if (await validateForms(
+                                  context: context,
+                                  name: nameController.text,
+                                  age: ageController.text,
+                                  batch: batchController.text,
+                                  mobile: mobileController.text,
+                                  email: emailController.text,
+                                  image: imageNotifier.value,
+                                  formKey: formKey,
+                                  isUpdate: true,
+                                  id: student.id,
+                                  message: 'Updated Successfully')) {
+                                studentListController.getStudents();
+                                Navigator.pop(context);
+                              }
                             },
                             icon: const Icon(Icons.save),
                             label: const Text("Update")),
@@ -156,50 +171,5 @@ class ScreenEditStduent extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void validate(BuildContext context) async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    } else if (imageNotifier.value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: kThemeColorGreen,
-            content: Text('Image is required')),
-      );
-      return;
-    }
-
-    final newStudent = StudentModel(
-        name: nameController.text,
-        age: ageController.text,
-        batch: batchController.text,
-        mobile: mobileController.text,
-        email: emailController.text,
-        image: imageNotifier.value);
-    DB db = DB.instance;
-    await db.updateStudent(newStudent, student.id!);
-    image = null;
-    imageNotifier.value = '';
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          backgroundColor: kThemeColorGreen,
-          content: Text('Updated Successfully')),
-    );
-    studentListNotifier.value = await DB.instance.getStudents();
-  }
-
-  Future<XFile> imagePicker() async {
-    try {
-      final XFile? image =
-          await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        throw Exception("No image was selected.");
-      }
-      return image;
-    } catch (e) {
-      throw Exception(e);
-    }
   }
 }

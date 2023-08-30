@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_data_using_getx/controllers/db/functions/db_functions.dart';
 import 'package:student_data_using_getx/core/colors/colors.dart';
 import 'package:student_data_using_getx/models/student_model.dart';
-import 'package:student_data_using_getx/view/edit_student/edit_student.dart';
-import 'package:student_data_using_getx/view/home/screen_home.dart';
+import 'package:student_data_using_getx/providers/providers.dart';
+import 'package:student_data_using_getx/views/edit_student/edit_student.dart';
 
 class Popupwidget extends StatelessWidget {
   const Popupwidget({super.key, required this.student});
@@ -11,6 +14,8 @@ class Popupwidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final studentListController =
+        Provider.of<StudentViewController>(context, listen: false);
     return PopupMenuButton<String>(
       color: kThemeColorGreen,
       elevation: 10,
@@ -25,7 +30,7 @@ class Popupwidget extends StatelessWidget {
           ));
         } else if (value == 'delete') {
           await DB.instance.deleteStudent(student.id!);
-          studentListNotifier.value = await DB.instance.getStudents();
+          studentListController.getStudents();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: kThemeColorGreen,
               content: Text('Deleted Successfully')));

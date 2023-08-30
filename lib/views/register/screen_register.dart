@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_data_using_getx/controllers/db/functions/db_functions.dart';
+import 'package:provider/provider.dart';
 import 'package:student_data_using_getx/controllers/validation_functions/validation.dart';
 import 'package:student_data_using_getx/core/colors/colors.dart';
-import 'package:student_data_using_getx/models/student_model.dart';
+import 'package:student_data_using_getx/providers/providers.dart';
+import '../../controllers/image_picker/image_picker.dart';
 import '../../core/constants/contants.dart';
-import '../home/screen_home.dart';
 import '../widgets/text_fom_field_widget/text_form_field_widget.dart';
 
 XFile? image;
@@ -20,9 +20,10 @@ class ScreenRegister extends StatelessWidget {
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ImagePicker _imagePicker = ImagePicker();
   @override
   Widget build(BuildContext context) {
+    final studentListController =
+        Provider.of<StudentViewController>(context, listen: false);
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
@@ -52,14 +53,12 @@ class ScreenRegister extends StatelessWidget {
                           height: 200,
                           width: 200,
                           decoration: BoxDecoration(
+                            color: kThemeColorGreen,
                             image: imageNotifier.value.isNotEmpty
                                 ? DecorationImage(
                                     image: FileImage(File(value)),
                                     fit: BoxFit.cover)
-                                : const DecorationImage(
-                                    image: NetworkImage(
-                                        'https://media.gq.com/photos/56e853e7161e63486d04d6c8/4:3/w_1600,h_1200,c_limit/david-beckham-gq-0416-2.jpg'),
-                                    fit: BoxFit.cover),
+                                : null,
                             shape: BoxShape.circle,
                           ),
                           child: const Align(
@@ -112,8 +111,20 @@ class ScreenRegister extends StatelessWidget {
                                   fixedSize: MaterialStatePropertyAll(
                                     Size(210, 50),
                                   )),
-                              onPressed: () {
-                                validate(context);
+                              onPressed: () async {
+                                if (await validateForms(
+                                    isUpdate: false,
+                                    context: context,
+                                    name: nameController.text,
+                                    age: ageController.text,
+                                    batch: batchController.text,
+                                    mobile: mobileController.text,
+                                    email: emailController.text,
+                                    image: imageNotifier.value,
+                                    formKey: formKey,
+                                    message: 'Student added Successfully')) {
+                                  studentListController.getStudents();
+                                }
                               },
                               icon: const Icon(Icons.save),
                               label: const Text("Save")),
@@ -150,43 +161,5 @@ class ScreenRegister extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void validate(BuildContext context) async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    } else if (image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: kThemeColorGreen,
-            content: Text('Image is required')),
-      );
-      return;
-    }
-    final student = StudentModel(
-        name: nameController.text,
-        age: ageController.text,
-        batch: batchController.text,
-        mobile: mobileController.text,
-        email: emailController.text,
-        image: image!.path);
-    DB db = DB.instance;
-    await db.addStudent(student);
-    image = null;
-    imageNotifier.value = '';
-    studentListNotifier.value = await DB.instance.getStudents();
-  }
-
-  Future<XFile> imagePicker() async {
-    try {
-      final XFile? image =
-          await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        throw Exception("No image was selected.");
-      }
-      return image;
-    } catch (e) {
-      throw Exception(e);
-    }
   }
 }

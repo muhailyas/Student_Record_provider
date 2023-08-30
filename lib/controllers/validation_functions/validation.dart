@@ -1,3 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter/material.dart';
+
+import '../../core/colors/colors.dart';
+import '../../models/student_model.dart';
+import '../../views/register/screen_register.dart';
+import '../db/functions/db_functions.dart';
+
 bool isValidName(String input) {
   return input.isNotEmpty;
 }
@@ -53,4 +62,48 @@ validateFunctions(Function function, String input) {
   } else {
     return isValidEmail(input);
   }
+}
+
+Future<bool> validateForms({
+  required BuildContext context,
+  required String name,
+  required String age,
+  required String batch,
+  required String mobile,
+  required String email,
+  required String image,
+  required GlobalKey<FormState> formKey,
+  required bool isUpdate,
+  required String message,
+  int? id,
+}) async {
+  if (!formKey.currentState!.validate()) {
+    return false;
+  } else if (imageNotifier.value.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          backgroundColor: kThemeColorGreen,
+          content: Text('Image is required')),
+    );
+    return false;
+  }
+  final student = StudentModel(
+      name: name,
+      age: age,
+      batch: batch,
+      mobile: mobile,
+      email: email,
+      image: image);
+  DB db = DB.instance;
+  if (isUpdate) {
+    await db.updateStudent(student, id!);
+  } else {
+    await db.addStudent(student);
+  }
+  formKey.currentState!.reset();
+  imageNotifier.value = '';
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(backgroundColor: kThemeColorGreen, content: Text(message)),
+  );
+  return true;
 }
