@@ -13,62 +13,67 @@ class Student extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          color: kThemeColorGreen,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 20,
-              left: 40,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.135,
-                width: MediaQuery.of(context).size.height * 0.135,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: FileImage(File(student.image)),
-                        fit: BoxFit.cover)),
+      child: Material(
+        borderRadius: BorderRadius.circular(20),
+        elevation: 25,
+        color: kThemeColorGreen,
+        child: Container(
+          decoration: BoxDecoration(
+            color: kThemeColorGreen,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 20,
+                left: 40,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.135,
+                  width: MediaQuery.of(context).size.height * 0.135,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: FileImage(File(student.image)),
+                          fit: BoxFit.cover)),
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 43,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 130,
-                    child: Center(
-                      child: Text(
-                        student.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: kFontColorWhite,
+              Positioned(
+                bottom: 10,
+                left: 43,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 130,
+                      child: Center(
+                        child: Text(
+                          student.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: kFontColorWhite,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                  Text(
-                    "Batch: ${student.batch}",
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: kFontColorWhite,
+                    Text(
+                      "Batch: ${student.batch}",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: kFontColorWhite,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Positioned(
-              right: 5,
-              top: 5,
-              child: Popupwidget(student:student),
-            ),
-          ],
+              Positioned(
+                right: 5,
+                top: 5,
+                child: Popupwidget(student: student),
+              ),
+            ],
+          ),
         ),
       ),
     );

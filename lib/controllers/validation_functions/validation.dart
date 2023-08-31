@@ -78,7 +78,7 @@ Future<bool> validateForms({
 }) async {
   if (!formKey.currentState!.validate()) {
     return false;
-  } else if (imageNotifier.value.isEmpty) {
+  } else if (image.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
           backgroundColor: kThemeColorGreen,

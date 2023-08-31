@@ -61,11 +61,26 @@ class ScreenHome extends StatelessWidget {
           ],
         ),
         body: Consumer<SearchProvider>(
-          builder: (context, value, child) {
+          builder: (context, searchValue, child) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child:
                   Consumer<StudentViewController>(builder: (context, value, _) {
+                if (value.studentList.isEmpty && searchValue.isSearching) {
+                  return const Center(
+                    child: Text(
+                      "No data found",
+                      style: TextStyle(color: kFontColorWhite),
+                    ),
+                  );
+                } else if (value.studentList.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "No data added yet",
+                      style: TextStyle(color: kFontColorWhite),
+                    ),
+                  );
+                }
                 return GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemCount: value.studentList.length,

@@ -13,7 +13,7 @@ class StudentDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: kThemeWhite,
+        backgroundColor: backgroundColor,
         body: SizedBox(
           height: double.infinity,
           child: Stack(
@@ -110,7 +110,7 @@ class StudentDetails extends StatelessWidget {
                     height: 95,
                     width: 190,
                     decoration: const BoxDecoration(
-                        color: kThemeWhite,
+                        color: backgroundColor,
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(95),
                             bottomRight: Radius.circular(88))),

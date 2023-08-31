@@ -35,7 +35,7 @@ class StudentDBGetX extends StatelessWidget {
       child: MaterialApp(
         title: 'studentDB',
         debugShowCheckedModeBanner: false,
-        home: ScreenHome(),
+        home: const ScreenHome(),
         theme: ThemeData(
           scaffoldBackgroundColor: backgroundColor,
           fontFamily: GoogleFonts.montserrat().fontFamily,

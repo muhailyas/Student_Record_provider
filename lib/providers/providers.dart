@@ -5,6 +5,13 @@ import 'package:student_data_using_getx/models/student_model.dart';
 class StudentViewController extends ChangeNotifier {
   final DB _db = DB();
   List<StudentModel> studentList = [];
+
+  String image = '';
+  void setImage(String imagePath) {
+    image = imagePath;
+    notifyListeners();
+  }
+
   getStudents() async {
     studentList = await _db.getStudents();
     notifyListeners();

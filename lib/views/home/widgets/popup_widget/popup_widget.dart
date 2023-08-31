@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:student_data_using_getx/core/colors/colors.dart';
 import 'package:student_data_using_getx/models/student_model.dart';
 import 'package:student_data_using_getx/providers/providers.dart';
-import 'package:student_data_using_getx/views/edit_student/edit_student.dart';
+import 'package:student_data_using_getx/views/edit/edit_student.dart';
 
 class Popupwidget extends StatelessWidget {
   const Popupwidget({super.key, required this.student});
