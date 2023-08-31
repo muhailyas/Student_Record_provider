@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student_data_using_getx/controllers/db/functions/db_functions.dart';
 import 'package:student_data_using_getx/core/colors/colors.dart';
 import 'package:student_data_using_getx/models/student_model.dart';
 import 'package:student_data_using_getx/providers/providers.dart';
@@ -14,8 +13,6 @@ class Popupwidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final studentListController =
-        Provider.of<StudentViewController>(context, listen: false);
     return PopupMenuButton<String>(
       color: kThemeColorGreen,
       elevation: 10,
@@ -29,8 +26,7 @@ class Popupwidget extends StatelessWidget {
             builder: (context) => ScreenEditStduent(student: student),
           ));
         } else if (value == 'delete') {
-          await DB.instance.deleteStudent(student.id!);
-          studentListController.getStudents();
+          context.read<StudentViewController>().deleteStudent(student.id!);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: kThemeColorGreen,
               content: Text('Deleted Successfully')));

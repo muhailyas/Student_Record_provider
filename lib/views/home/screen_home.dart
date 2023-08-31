@@ -8,7 +8,7 @@ import 'package:student_data_using_getx/views/register/screen_register.dart';
 import '../student_details/student_detail_page.dart';
 
 class ScreenHome extends StatelessWidget {
-  ScreenHome({super.key});
+  const ScreenHome({super.key});
   @override
   Widget build(BuildContext context) {
     final studentListController =
@@ -22,7 +22,7 @@ class ScreenHome extends StatelessWidget {
           title: Consumer<SearchProvider>(
             builder: (context, value, child) => value.isSearching
                 ? TextField(
-                    autofocus: value.isSearching,
+                    autofocus: true,
                     style: const TextStyle(color: kFontColorWhite),
                     onChanged: (value) {
                       studentListController.getSearchResult(value);

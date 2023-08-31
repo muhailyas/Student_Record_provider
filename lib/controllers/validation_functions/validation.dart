@@ -1,11 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:student_data_using_getx/providers/providers.dart';
 import '../../core/colors/colors.dart';
 import '../../models/student_model.dart';
 import '../../views/register/screen_register.dart';
-import '../db/functions/db_functions.dart';
 
 bool isValidName(String input) {
   return input.isNotEmpty;
@@ -94,11 +93,10 @@ Future<bool> validateForms({
       mobile: mobile,
       email: email,
       image: image);
-  DB db = DB.instance;
   if (isUpdate) {
-    await db.updateStudent(student, id!);
+    await context.read<StudentViewController>().updateStudent(student, id!);
   } else {
-    await db.addStudent(student);
+    await context.read<StudentViewController>().addStudent(student);
   }
   formKey.currentState!.reset();
   imageNotifier.value = '';

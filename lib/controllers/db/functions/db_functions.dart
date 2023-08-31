@@ -4,7 +4,7 @@ import 'package:student_data_using_getx/models/student_model.dart';
 class DB {
   DB._();
   static final DB instance = DB._();
-  factory DB() => DB._();
+  factory DB() => instance;
 
   late Database db;
 

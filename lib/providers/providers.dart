@@ -3,18 +3,34 @@ import 'package:student_data_using_getx/controllers/db/functions/db_functions.da
 import 'package:student_data_using_getx/models/student_model.dart';
 
 class StudentViewController extends ChangeNotifier {
+  final DB _db = DB();
   List<StudentModel> studentList = [];
   getStudents() async {
-    studentList = await DB.instance.getStudents();
+    studentList = await _db.getStudents();
     notifyListeners();
   }
 
   getSearchResult(String query) async {
-    List<StudentModel> list = await DB.instance.getStudents();
+    List<StudentModel> list = await _db.getStudents();
     studentList = list
         .where((student) =>
             student.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
     notifyListeners();
+  }
+
+  addStudent(StudentModel student) async {
+    await _db.addStudent(student);
+    await getStudents();
+  }
+
+  updateStudent(StudentModel student, int id) async {
+    await _db.updateStudent(student, id);
+    await getStudents();
+  }
+
+  deleteStudent(int id) async {
+    await _db.deleteStudent(id);
+    await getStudents();
   }
 }

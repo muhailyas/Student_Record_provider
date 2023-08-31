@@ -23,10 +23,12 @@ class CounterApp extends StatelessWidget {
             "Count will increase when you click the button",
             style: TextStyle(color: Colors.white),
           ),
-          Text(
-            changeCounter.count.toString(),
-            style: const TextStyle(color: Colors.white),
-          ),
+          Consumer<CounterController>(builder: (context, value, _) {
+            return Text(
+              value.count.toString(),
+              style: const TextStyle(color: Colors.white),
+            );
+          }),
           TextButton(onPressed: changeCounter.reset, child: const Text("Reset"))
         ],
       ),
