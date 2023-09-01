@@ -4,7 +4,6 @@ import 'package:student_data_using_getx/controllers/db/functions/db_functions.da
 import 'package:student_data_using_getx/core/colors/colors.dart';
 import 'package:student_data_using_getx/providers/providers.dart';
 import 'package:student_data_using_getx/providers/search_provider.dart';
-import 'package:student_data_using_getx/test/test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:student_data_using_getx/views/home/screen_home.dart';
 
@@ -22,9 +21,6 @@ class StudentDBGetX extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<CounterController>(
-          create: (context) => CounterController(),
-        ),
         ChangeNotifierProvider<StudentViewController>(
           create: (context) => StudentViewController(),
         ),
@@ -38,7 +34,7 @@ class StudentDBGetX extends StatelessWidget {
         home: const ScreenHome(),
         theme: ThemeData(
           scaffoldBackgroundColor: backgroundColor,
-          fontFamily: GoogleFonts.montserrat().fontFamily,
+          fontFamily: GoogleFonts.sofiaSans().fontFamily,
         ),
       ),
     );

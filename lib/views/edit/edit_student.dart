@@ -138,6 +138,7 @@ class ScreenEditStduent extends StatelessWidget {
                                     id: student.id,
                                     message: 'Updated Successfully')) {
                                   studentListController.getStudents();
+                                  studentListController.setImage('');
                                   Navigator.pop(context);
                                 }
                               },
