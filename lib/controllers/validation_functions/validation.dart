@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:student_data_using_getx/providers/providers.dart';
 import '../../core/colors/colors.dart';
 import '../../models/student_model.dart';
-import '../../views/register/screen_register.dart';
 
 bool isValidName(String input) {
   return input.isNotEmpty;
@@ -99,7 +98,6 @@ Future<bool> validateForms({
     await context.read<StudentViewController>().addStudent(student);
   }
   formKey.currentState!.reset();
-  imageNotifier.value = '';
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(backgroundColor: kThemeColorGreen, content: Text(message)),
   );

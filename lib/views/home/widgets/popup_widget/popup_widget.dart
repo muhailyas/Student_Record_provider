@@ -28,7 +28,7 @@ class Popupwidget extends StatelessWidget {
         } else if (value == 'delete') {
           context.read<StudentViewController>().deleteStudent(student.id!);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: kThemeColorGreen,
+              backgroundColor: Colors.red,
               content: Text('Deleted Successfully')));
         }
       },

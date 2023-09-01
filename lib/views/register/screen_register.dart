@@ -10,7 +10,6 @@ import '../../core/constants/contants.dart';
 import '../widgets/text_fom_field_widget/text_form_field_widget.dart';
 
 XFile? image;
-ValueNotifier<String> imageNotifier = ValueNotifier('');
 
 class ScreenRegister extends StatelessWidget {
   ScreenRegister({super.key});
